@@ -1,0 +1,179 @@
+body {
+    background: #FFFFFF;
+    color: #2D3748;
+    font-family: "SansSerif", sans-serif;
+}
+
+.structure-table {
+    width: 100%;
+
+}
+
+.header {
+    text-align: center;
+    font-family: "SansSerif", sans-serif;
+    font-size: 10px;
+    color: #2D3748;
+    background: #EBF4FF;
+    padding: 15px 0;
+    border: 3px solid #4299E1;
+    border-radius: 5px;
+
+}
+
+#header-name, #header-group, #header-var {
+    color: #2C5282;
+    margin: 8px 0;
+    font-weight: 600;
+}
+
+.change-block, .result, .graph {
+    vertical-align: top;
+    text-align: center;
+}
+
+.change-block {
+    vertical-align: top;
+    width: 15%;
+    height: 300px;
+    text-align: center;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+}
+
+.change-title {
+    font-size: 20px;
+    color: #2D3748;
+    font-family: "SansSerif", sans-serif;
+    margin-bottom: 15px;
+}
+
+.y-input, .r-input {
+    margin: 5px;
+}
+
+.x-label, .r-label, .y-label {
+    color: #2D3748;
+    font-family: "SansSerif", sans-serif;
+    cursor: pointer;
+}
+
+.y-input:checked + label,
+.r-input:checked + label {
+    font-weight: bold;
+}
+
+.x-input {
+    background: #F7FAFC;
+    color: #2D3748;
+    border: 1px solid #CBD5E0;
+    border-radius: 4px;
+    padding: 8px;
+    width: 80%;
+    margin-top: 10px;
+    font-family: "SansSerif", sans-serif;
+}
+
+.x-input:focus {
+    outline: none;
+    border-color: #4299E1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+}
+
+.result {
+    text-align: center;
+    vertical-align: top;
+    padding: 15px 150px;
+    background: #F8FAFC;
+    border-top: 1px solid #E2E8F0;
+    border-radius: 4px;
+    height: 100vh;
+
+}
+
+#result-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#result-table th {
+    width: 16%;
+    font-size: 16px;
+    color: #2D3748;
+    font-family: "SansSerif", sans-serif;
+    background: #E2E8F0;
+    padding: 1px;
+    border: 1px solid #CBD5E0;
+}
+
+#result-table td {
+    padding: 8px;
+    border: 1px solid #CBD5E0;
+    color: #2D3748;
+}
+
+
+.button {
+    text-align: center;
+    border-radius: 5px;
+    padding: 20px;
+    background: #F8FAFC;
+    border-top: 1px solid #E2E8F0;
+}
+
+#ready-button {
+    background: #4299E1;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-family: "SansSerif", sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#ready-button:hover {
+    background: #3182CE;
+}
+
+#ready-button:active {
+    background: #2B6CB0;
+}
+
+.graph {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.graph p {
+    color: #2D3748;
+    font-family: "SansSerif", sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/*#canvas {*/
+/*    border: 1px solid #E2E8F0;*/
+/*    border-radius: 4px;*/
+/*    background: #FFFFFF;*/
+/*}*/
+
+.field-errors {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.4em;
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    color: red;
+    line-height: 1.25;
+}
+
+.field-errors:empty {
+    display: none;
+}
