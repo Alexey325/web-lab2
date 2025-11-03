@@ -25,6 +25,8 @@ public class AreaCheckServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+        Boolean processed = (Boolean) session.getAttribute("requestProcessed");
+
         String xFromRequest = (String) session.getAttribute("x");
         String yFromRequest = (String) session.getAttribute("y");
         String rFromRequest = (String) session.getAttribute("r");
@@ -37,13 +39,30 @@ public class AreaCheckServlet extends HttpServlet {
         HitChecker hitChecker = new HitChecker(x, y, r);
         String hit = hitChecker.check() ? "ДА" : "НЕТ";
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String localTime = now.format(formatter);
+        String localTime;
+        String processingTime;
 
+        if (processed == null || !processed) {
 
-        long processingMs = (System.nanoTime() - processingTimeFromRequest) / 1_000_000;
-        String processingTime = Long.toString(processingMs);
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            localTime = now.format(formatter);
+
+            long processingMs = (System.nanoTime() - processingTimeFromRequest) / 1_000_000;
+            processingTime = Long.toString(processingMs);
+
+            session.setAttribute("localTime", localTime);
+            session.setAttribute("processingTime", Long.valueOf(processingTime));
+
+            session.setAttribute("requestProcessed", true);
+
+        } else {
+
+            localTime = (String) session.getAttribute("localTime");
+            Long processingTimeFromSession = (Long) session.getAttribute("processingTime");
+            processingTime = Long.toString(processingTimeFromSession);
+
+        }
 
         Result result = new Result(x, y, r, hit, localTime, processingTime);
 
@@ -55,12 +74,12 @@ public class AreaCheckServlet extends HttpServlet {
             results = new ArrayList<>();
         }
 
-        results.add(result);
+        if (processed == null || !processed) {
+            results.add(result);
+        }
         context.setAttribute("results", results);
 
-
         request.setAttribute("result", result);
-
 
         request.getRequestDispatcher("pages/result.jsp").forward(request, response);
     }

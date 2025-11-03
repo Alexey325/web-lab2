@@ -77,6 +77,7 @@ public class ControllerServlet extends HttpServlet {
             session.setAttribute("y", y);
             session.setAttribute("r", r);
             session.setAttribute("processingTime", startTime);
+            session.setAttribute("requestProcessed", false);
 
             response.sendRedirect(request.getContextPath() + "/result");
 

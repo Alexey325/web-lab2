@@ -147,6 +147,33 @@
                     <td><%= row.getHit() %></td>
                     <td><%= row.getLocalTime() %></td>
                     <td><%= row.getProcessingTime() %></td>
+
+                    <script>
+                        const points = [
+                            <%
+                                if (!results.isEmpty()) {
+                                    for (int i = 0; i < results.size(); i++) {
+                                        Result rowToDraw = results.get(i);
+                            %>
+                            {
+                                x: <%= rowToDraw.getX() %>,
+                                y: <%= rowToDraw.getY() %>,
+                                r: <%= rowToDraw.getR() %>,
+                                hit: "<%= rowToDraw.getHit() %>"
+                            }<%= (i < results.size() - 1) ? "," : "" %>
+                            <%
+                                    }
+                                }
+                            %>
+                        ];
+
+                        window.onload = function() {
+                            points.forEach(point => {
+                                drawPoint(point.x, point.y, point.r, point.hit);
+                            });
+                        }
+                    </script>
+
                 </tr>
                 <%
                     }
