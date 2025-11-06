@@ -1,5 +1,11 @@
 package org.example.web_2.Servlets;
 
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,13 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.web_2.Result;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @WebServlet("/main")
 public class ControllerServlet extends HttpServlet {
@@ -88,5 +93,70 @@ public class ControllerServlet extends HttpServlet {
             request.getRequestDispatcher("pages/index.jsp").forward(request, response);
         }
 
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = request.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        }
+        String jsonData = sb.toString();
+        System.out.println("Received JSON: " + jsonData);
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        String attempts = String.valueOf(jsonObject.getInt("attempts"));
+        String hits = String.valueOf(jsonObject.getInt("hits"));
+        String misses = String.valueOf(jsonObject.getInt("misses"));
+        String percentage = String.valueOf(jsonObject.getInt("percentage"));
+
+
+        //Настраиваем свойства SMTP
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "localhost");
+        props.put("mail.smtp.port", "1025");
+        props.put("mail.smtp.auth", "false"); // без авторизации
+
+        //почтовая сессия
+        Session session = Session.getInstance(props);
+//        session.setDebug(true); // вывод SMTP-команд в консоль
+
+        try {
+
+            MimeMessage message = new MimeMessage(session);
+
+            // От кого
+            message.setFrom(new InternetAddress("sender@gmail.com"));
+
+            // Кому
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse("receiver@gmail.com", false));
+
+            // Тема письма
+            message.setSubject("Statistic from lab 2 application", "UTF-8");
+
+            message.setText(
+                    "User statistics received from client:\n\n" +
+                            "attempts: " + attempts + "\n" +
+                            "hits: " + hits + "\n" +
+                            "misses: " + misses + "\n" +
+                            "percentage: " + percentage + "%" ,
+                    "UTF-8"
+            );
+
+            Transport.send(message);
+
+            response.setContentType("text/plain; charset=UTF-8");
+            response.getWriter().write("{\"success\": true, \"message\": \"Данные получены\"}");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to send email: " + e.getMessage());
+        }
     }
 }

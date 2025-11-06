@@ -121,6 +121,12 @@
     </form>
 
     <tr>
+        <td class="button" colspan="4">
+            <button type="submit" id="statistic-button">Отправить статистику на почту</button>
+        </td>
+    </tr>
+
+    <tr>
         <td class="result" colspan="4">
             <table id="result-table">
 
@@ -196,9 +202,15 @@
 
 </table>
 
+<script>
+    // Определяем contextPath один раз
+    const contextPath = '${pageContext.request.contextPath}';
+</script>
+
 <script src="${pageContext.request.contextPath}/js/graph.js"></script>
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
 <script src="${pageContext.request.contextPath}/js/fetchFromCanvas.js"></script>
+<script src="${pageContext.request.contextPath}/js/fetchStatistic.js"></script>
 
 </body>
 
